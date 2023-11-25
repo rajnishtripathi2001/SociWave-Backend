@@ -37,6 +37,7 @@ app.get("/", (req, res) => {
 /*----- User Handeling -----*/
 // Register New user
 app.post(process.env.NEW_USER, userRoutes.CreateUser);
+
 //Login User
 app.post(process.env.GET_USER, userRoutes.GetUser);
 

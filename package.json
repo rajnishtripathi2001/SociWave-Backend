@@ -4,7 +4,7 @@
   "description": "SociWave Backend to handel Users, User's Wallet and manage the dataflow in database.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "Rajnish Tripathi",
   "license": "ISC",
