@@ -62,6 +62,9 @@ exports.PaymentVerification = async (req,res) =>{
 
     // Updating the Wallet Status in Database
     const userW = await Wallet.findById(userID);
+
+    // console.log("User Wallet : " + userW);
+
     newBalance = Number(walletAmount) + Number(userW.balance);
     
     // updating wallet DB with new balance, and last transaction order & payment id
@@ -72,7 +75,7 @@ exports.PaymentVerification = async (req,res) =>{
       balance:newBalance,
     });
      
-    res.redirect("https://www.sociwave.tech/"); //update this with your redirect url
+    res.redirect("http://localhost:3000/"); //update this with your redirect url
   }
   else{
     res.status(400).json({
