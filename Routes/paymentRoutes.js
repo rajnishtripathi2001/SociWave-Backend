@@ -1,87 +1,55 @@
-const Razorpay = require("razorpay");
-const Crypto = require('crypto');
-const Wallet = require('../Model/Wallet');
+const nodemailer = require("nodemailer");
 
-const instance = new Razorpay({
-  key_id: process.env.RAZORPAY_API_KEY,
-  key_secret: process.env.RAZORPAY_API_SECRET,
-});
-
-var walletAmount = 0;
-var userID = "";
-var newBalance = 0;
 
 exports.CreateOrder = (req, res) => {
+  console.log(req.body);
 
-  const amount = req.body.amount;
-  walletAmount = amount;
-  userID = req.body.userID;
+  const {upi,name,email,id} = req.body;
 
-  // console.log("Wallet amount : "+ walletAmount);
-  // console.log("User ID : " + userID);
+  const mail = `
+  <center>
+    <h2>Money Added to wallet</h2>
+  </center>
+  <ul>
+    <li><b>UPI Transaction ID: </b>${upi}</li>
+    <li><b>Name : </b>${name}</li>
+    <li><b>Email : </b>${email}</li>
+    <li><b>User ID : </b>${id}</li>
+  <hr>
+  <center>
+    <b>Thanks for being a great customer. We received your payment and soon it will be added to your wallet.</b>
+  </center>
 
-  try {
+  `;
 
-    const options = {
-      amount: amount * 100,
-      currency: "INR",
-      receipt: String(Math.floor(Date.now() / 10000000)),
-    };
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.SENDER_EMAIL,
+      pass: process.env.SENDER_PASSW,
+    },
+  });
 
-    instance.orders.create(options, async function (err, order) {
-      if (err) {
-        return res.status(500).json({
-          message: "Something Went Wrong with if block",
-        });
-      }
-      return res.status(200).json(order);
+  const message = {
+    from: process.env.SENDER_EMAIL,
+    to: `${process.env.PROVIDER_EMAIL},${email}`,
+    subject: "Money Added to wallet",
+    text: "Simple text",
+    html: mail,
+  };
+
+  transporter
+    .sendMail(message)
+    .then(() => {
+      console.log("mail sent scucessfully");
+    })
+    .catch(() => {
+      console.log("Error in sending mail");
     });
 
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      message: "Something Went Wrong with Try Block",
-    });
-  }
-};
-
-exports.PaymentVerification = async (req,res) =>{
- 
-  const{razorpay_payment_id,razorpay_order_id,razorpay_signature} = req.body;
-
-  const body = razorpay_order_id + '|' + razorpay_payment_id;
-
-  const expectedSignature = Crypto
-    .createHmac('sha256',process.env.RAZORPAY_API_SECRET)
-    .update(body.toString())
-    .digest('hex');
-
-  const isAuthentic = expectedSignature === razorpay_signature;
-
-  if(isAuthentic){
-
-    // Updating the Wallet Status in Database
-    const userW = await Wallet.findById(userID);
-
-    // console.log("User Wallet : " + userW);
-
-    newBalance = Number(walletAmount) + Number(userW.balance);
-    
-    // updating wallet DB with new balance, and last transaction order & payment id
-    userW.balance = 
-    await Wallet.findByIdAndUpdate( userID,{
-      razorpay_payment_id,
-      razorpay_order_id,
-      balance:newBalance,
-    });
-     
-    res.redirect("http://localhost:3000/"); //update this with your redirect url
-  }
-  else{
-    res.status(400).json({
-      sucess:false
-    });
-
-  }
+  res.json({
+    success: true,
+    message: "Order Created",
+  });
 
 };

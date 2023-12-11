@@ -42,15 +42,9 @@ app.post(process.env.NEW_USER, userRoutes.CreateUser);
 app.post(process.env.GET_USER, userRoutes.GetUser);
 
 /*----- Payment Handeling -----*/
-// Send the API Key
-app.get(process.env.GET_API_KEY, (req, res) => {
-  res.status(200).json({ key: process.env.RAZORPAY_API_KEY });
-});
+
 // Create New payment order
 app.post(process.env.NEW_PAYEMT_ORDER, paymentRoutes.CreateOrder);
-// Verfiy the freshly created order
-app.post(process.env.VERIFY_PAYMENT_ORDER, paymentRoutes.PaymentVerification);
-
 
 /* --- Wallet handeling ---*/
 // Fetch the wallet Info of loggedin user
