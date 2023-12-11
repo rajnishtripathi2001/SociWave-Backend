@@ -51,7 +51,7 @@ app.post(process.env.NEW_PAYEMT_ORDER, paymentRoutes.CreateOrder);
 app.get(process.env.FETCH_WALLET, Mailer.getWallet);
 
 // Update wallet after purchase and send email notification
-app.put(process.env.UPDATE_WALLET,Mailer.Mailer);
+app.post(process.env.UPDATE_WALLET,Mailer.Mailer);
 
 
 app.get('/global',async(req,res)=>{
