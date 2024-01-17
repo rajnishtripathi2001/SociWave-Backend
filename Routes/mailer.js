@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const Wallet = require("../Model/Wallet");
 const GlobalInfo = require("../Model/globalInfo");
+const Order = require("../Model/Order");
 
 exports.Mailer = async (req, res) => {
   const uID = req.body.trans.id;
@@ -9,6 +10,15 @@ exports.Mailer = async (req, res) => {
   const userEmail = req.body.trans.userEmail;
   const billAmnt = req.body.trans.billAmnt;
   const price = req.body.trans.price;
+
+  const orderDetails = {
+    _id: uID,
+    orderDate: new Date().toLocaleDateString(),
+    orderType: service,
+    workLink: link,
+    amount: billAmnt,
+    action: "Pending",
+  };
 
   const mail = `
   <center>
@@ -41,6 +51,11 @@ exports.Mailer = async (req, res) => {
   const G = await GlobalInfo.findOne();
   const newG = G.totalOrders + 1;
   await GlobalInfo.updateOne({totalOrders:newG});
+
+  // Adding order to Order Collection
+
+  const newOrder = await Order.create(orderDetails);
+
 
   //sending mail
 

@@ -4,8 +4,9 @@ const walletSchema = new mongoose.Schema({
     _id: String,
     balance:Number,
     spending:Number, 
-    razorpay_payment_id : String,
-    razorpay_order_id : String,   
+    lastTransaction: Number,
+    lastTransactionDate: String,   
+    walletstatus: String,
 })
 
 const Wallet = new mongoose.model("Wallet",walletSchema);

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const globalInfoSchema = new mongoose.Schema({
     totalOrders:Number,
+    maintinanceMode: String,
 })
 
 const GlobalInfo = new mongoose.model("GlobalInfo",globalInfoSchema);

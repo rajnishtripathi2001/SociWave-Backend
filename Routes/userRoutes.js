@@ -12,8 +12,9 @@ exports.CreateUser = async (req, res) => {
     _id: uID,
     balance: 0,
     spending: 0,
-    razorpay_payment_id: "",
-    razorpay_order_id: "",
+    lastTransaction: 0,
+    lastTransactionDate: "",   
+    walletstatus: "Active",
   });
 
   res.status(201).json({
