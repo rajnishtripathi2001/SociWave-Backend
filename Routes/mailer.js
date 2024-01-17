@@ -3,8 +3,12 @@ const Wallet = require("../Model/Wallet");
 const GlobalInfo = require("../Model/globalInfo");
 const Order = require("../Model/Order");
 
-let date = new Date().toLocaleDateString();
+// Getting Current Date and Time in IST
+const date = new Date();
+const options = { timeZone: 'Asia/Kolkata' };
+const formattedDate = date.toLocaleDateString(undefined, options);
 
+// Adding Order to Order Collection and sending mail to user and provider
 exports.Mailer = async (req, res) => {
   const uID = req.body.trans.id;
   const service = req.body.trans.service;
@@ -16,7 +20,7 @@ exports.Mailer = async (req, res) => {
   const orderDetails = {
     _id: Date.now(),
     uID: uID,
-    orderDate: date,
+    orderDate: formattedDate,
     orderType: service,
     workLink: link,
     amount: billAmnt,
@@ -43,13 +47,11 @@ exports.Mailer = async (req, res) => {
   `;
 
   // Updating Wallet after purchase
-
-  
   const update = {
     balance: parseFloat(req.body.trans.balance).toFixed(2),
     spending: parseFloat(req.body.trans.spending).toFixed(2),
     lastTransaction: Number(billAmnt),
-    lastTransactionDate: date,
+    lastTransactionDate: formattedDate,
   };
 
   const wallet = await Wallet.findByIdAndUpdate(uID, update);
