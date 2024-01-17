@@ -3,7 +3,17 @@ const Wallet = require("../Model/Wallet");
 
 // creates new user profile
 exports.CreateUser = async (req, res) => {
-  const user = await Users.create(req.body);
+
+  const NEW_USER = {
+    _id: req.body._id,
+    fname: req.body.fname,
+    lname: req.body.lname,
+    email: req.body.email,
+    password: req.body.password,
+    status: "Active"
+  }
+
+  const user = await Users.create(NEW_USER);
 
   const uID = String(req.body._id);
 
