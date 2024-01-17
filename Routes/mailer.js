@@ -12,7 +12,8 @@ exports.Mailer = async (req, res) => {
   const price = req.body.trans.price;
 
   const orderDetails = {
-    _id: uID,
+    _id: Date.now(),
+    uID: uID,
     orderDate: new Date().toLocaleDateString(),
     orderType: service,
     workLink: link,
@@ -42,6 +43,8 @@ exports.Mailer = async (req, res) => {
   const update = {
     balance: parseFloat(req.body.trans.balance).toFixed(2),
     spending: parseFloat(req.body.trans.spending).toFixed(2),
+    lastTransaction: billAmnt,
+    lastTransactionDate: new Date().toLocaleDateString(),
   };
 
   const wallet = await Wallet.findByIdAndUpdate(uID, update);
