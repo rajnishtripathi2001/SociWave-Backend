@@ -40,10 +40,11 @@ exports.Mailer = async (req, res) => {
 
   `;
 
+  // Updating Wallet after purchase
   const update = {
     balance: parseFloat(req.body.trans.balance).toFixed(2),
     spending: parseFloat(req.body.trans.spending).toFixed(2),
-    lastTransaction: billAmnt,
+    lastTransaction: Number(billAmnt),
     lastTransactionDate: new Date().toLocaleDateString(),
   };
 
