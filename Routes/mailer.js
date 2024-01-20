@@ -64,7 +64,7 @@ exports.Mailer = async (req, res) => {
 
   // Adding order to Order Collection
 
-  const newOrder = await Order.create(orderDetails);
+  await Order.create(orderDetails);
 
 
   //sending mail

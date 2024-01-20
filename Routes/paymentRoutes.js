@@ -1,11 +1,8 @@
 const nodemailer = require("nodemailer");
-
+const Transaction = require("../Model/Transactions");
 
 exports.CreateOrder = (req, res) => {
-  console.log(req.body);
-
-  const {upi,name,email,id} = req.body;
-
+  const { upi, name, email, id } = req.body;
   const mail = `
   <center>
     <h2>Money Added to wallet</h2>
@@ -47,9 +44,26 @@ exports.CreateOrder = (req, res) => {
       console.log("Error in sending mail");
     });
 
+  // adding transaction to database (name, email, upi, id) Testing left below code 
+
+  const date = new Date();
+  const options = { timeZone: "Asia/Kolkata" };
+  const formattedDate = date.toLocaleDateString(undefined, options);
+
+  const transactionData = {
+    _id: Date.now(),
+    uID: id,
+    name: name,
+    email: email,
+    transactionID: upi,
+    transactionDate: formattedDate,
+    
+  };
+
+  Transaction.create(transactionData);
+
   res.json({
     success: true,
     message: "Order Created",
   });
-
 };
