@@ -44,8 +44,7 @@ exports.CreateOrder = (req, res) => {
       console.log("Error in sending mail");
     });
 
-  // adding transaction to database (name, email, upi, id) Testing left below code 
-
+  // adding transaction to database
   const date = new Date();
   const options = { timeZone: "Asia/Kolkata" };
   const formattedDate = date.toLocaleDateString(undefined, options);
@@ -57,7 +56,7 @@ exports.CreateOrder = (req, res) => {
     email: email,
     transactionID: upi,
     transactionDate: formattedDate,
-    
+    verification: "Pending",    
   };
 
   Transaction.create(transactionData);

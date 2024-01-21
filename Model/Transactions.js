@@ -7,6 +7,7 @@ const transactionSchema = new mongoose.Schema({
     email:String,
     transactionDate:String,
     transactionID:String,
+    verification:String,
 });
 
 const Transaction = new mongoose.model("Transactions",transactionSchema);
