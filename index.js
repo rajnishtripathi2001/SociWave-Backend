@@ -53,7 +53,7 @@ app.get(process.env.FETCH_WALLET, Mailer.getWallet);
 // Update wallet after purchase and send email notification
 app.post(process.env.UPDATE_WALLET,Mailer.Mailer);
 
-
+// get global data
 app.get('/global',async(req,res)=>{
   const G = await GlobalInfo.findOne();
   res.status(200).json({
@@ -61,6 +61,13 @@ app.get('/global',async(req,res)=>{
     G
   })
 })
+
+// genrate OTP for forgot password
+app.post('/generateOTP',userRoutes.generateOTP);
+
+// reset password
+
+app.post('/resetPassword',userRoutes.resetPassword);
 
 app.listen(PORT, () => {
   console.log(`Server running locally at http://localhost:5000`);
