@@ -17,7 +17,7 @@ exports.CreateUser = async (req, res) => {
 
   const uID = String(req.body._id);
 
-  // Creating New wallet for new User with some initial values.
+  // Creating New wallet for new user with 0 balance
   await Wallet.create({
     _id: uID,
     balance: 0,
@@ -29,22 +29,15 @@ exports.CreateUser = async (req, res) => {
 
   res.status(201).json({
     success: true,
-    user,
   });
 };
 
-// fetches all users profiles -- """May be in future be authenticate at backend"""
+// fetch user's profile details by email and password for login
 exports.GetUser = async (req, res) => {
-  // const users = await Users.find();
-  // res.status(200).json({
-  //   success: true,
-  //   users,
-  // });
+
   const { email, password } = req.body;
 
   const user = await Users.findOne({ email: email, password: password });
-
-  // console.log(user)
 
   if (user) {
     res.json({

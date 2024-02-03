@@ -17,16 +17,6 @@ exports.Mailer = async (req, res) => {
   const billAmnt = req.body.trans.billAmnt;
   const price = req.body.trans.price;
 
-  const orderDetails = {
-    _id: Date.now(),
-    uID: uID,
-    orderDate: formattedDate,
-    orderType: service,
-    workLink: link,
-    amount: billAmnt,
-    action: "Pending",
-  };
-
   const mail = `
   <center>
     <h2>Your Order Is Placed</h2>
@@ -63,6 +53,16 @@ exports.Mailer = async (req, res) => {
   await GlobalInfo.updateOne({totalOrders:newG});
 
   // Adding order to Order Collection
+
+  const orderDetails = {
+    _id: Date.now(),
+    uID: uID,
+    orderDate: formattedDate,
+    orderType: service,
+    workLink: link,
+    amount: billAmnt,
+    action: "Pending",
+  };
 
   await Order.create(orderDetails);
 
