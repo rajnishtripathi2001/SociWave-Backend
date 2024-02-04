@@ -63,11 +63,11 @@ app.get('/global',async(req,res)=>{
 })
 
 // genrate OTP for forgot password
-app.post('/generateOTP',userRoutes.generateOTP);
+app.post(process.env.GENERATE_OTP,userRoutes.generateOTP);
 
 // reset password
 
-app.post('/resetPassword',userRoutes.resetPassword);
+app.post(process.env.RESET_PASSWD,userRoutes.resetPassword);
 
 app.listen(PORT, () => {
   console.log(`Server running locally at http://localhost:5000`);
