@@ -20,7 +20,7 @@ exports.CreateUser = async (req, res) => {
       status: "Active",
     };
 
-    const user = await Users.create(NEW_USER);
+    await Users.create(NEW_USER);
 
     const uID = String(req.body._id);
 
@@ -37,8 +37,7 @@ exports.CreateUser = async (req, res) => {
     res.status(201).json({
       success: true,
     });
-  }
-  else{
+  } else {
     res.status(201).json({
       success: false,
     });
@@ -49,25 +48,28 @@ exports.CreateUser = async (req, res) => {
 exports.GetUser = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await Users.findOne({ email: email, password: password });
+  const user = await Users.findOne({ email: email });
 
-  if (user) {
-    res.json({
-      message: "User found",
-      status: "success",
-      user: {
-        id: user._id,
-        fname: user.fname,
-        lname: user.lname,
-        email: user.email,
-      },
-    });
-  } else {
-    res.json({
-      message: "User not found",
-      status: "failed",
-    });
+  if (!user) {
+    return res.status(401).send("Invalid username or password");
   }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+
+  if (!passwordMatch) {
+    return res.status(401).send("Invalid username or password");
+  }
+
+  res.json({
+    message: "User found",
+    status: "success",
+    user: {
+      id: user._id,
+      fname: user.fname,
+      lname: user.lname,
+      email: user.email,
+    },
+  });
 };
 
 // Generating OTP for password reset and send it to user's email
@@ -127,9 +129,13 @@ exports.generateOTP = async (req, res) => {
 // reset password of user
 exports.resetPassword = async (req, res) => {
   let { email, password } = req.body;
-  let result = await Users.findOneAndUpdate(
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const result = await Users.findOneAndUpdate(
     { email: email },
-    { password: password }
+    { password: hashedPassword }
   );
   if (result) {
     res.json({
