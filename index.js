@@ -31,7 +31,7 @@ mongoose
 
 // Default Route to check Server Status on Webpage
 app.get("/", (req, res) => {
-  res.send("Server is working");
+  res.sendFile(__dirname + "/index.html");
 });
 
 /*----- User Handeling -----*/

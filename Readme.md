@@ -1,5 +1,5 @@
 ### SociWave Backend
-This is the backend for the SociWave project. It is a RESTful API built using the REST Framework. It is currently hosted on Railways at https://sociwave-backend-production.up.railway.app/.
+This is the backend for the SociWave project. It is a RESTful API built using the REST Framework. It is currently hosted on Railways at [here](https://sociwave-backend.up.railway.app/).
 
 ### Installation
 1. Clone the repository
@@ -12,6 +12,7 @@ This is the backend for the SociWave project. It is a RESTful API built using th
 2. User Wallet management
 3. Purchase management
 4. Email Notifications for purchases
+5. Forgot Password feature using email
 
 ### Working
 1. The user can register and login to the system from the frontend.
