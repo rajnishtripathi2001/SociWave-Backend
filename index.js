@@ -53,14 +53,18 @@ app.get(process.env.FETCH_WALLET, Mailer.getWallet);
 // Update wallet after purchase and send email notification
 app.post(process.env.UPDATE_WALLET,Mailer.Mailer);
 
-// get global data
+/* --- Global Data ---*/
+// get global data for website maintenance status and other info
 app.get('/global',async(req,res)=>{
   const G = await GlobalInfo.findOne();
   res.status(200).json({
     success: true,
     G
   })
-})
+});
+
+
+/* --- Forgot Password ---*/
 
 // genrate OTP for forgot password
 app.post(process.env.GENERATE_OTP,userRoutes.generateOTP);
