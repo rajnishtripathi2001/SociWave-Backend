@@ -4,11 +4,12 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-// importing all requires modules
+// importing all requires Routes and Models
 const userRoutes = require("./Routes/userRoutes");
 const paymentRoutes = require("./Routes/paymentRoutes");
 const Mailer = require('./Routes/mailer');
 const GlobalInfo = require("./Model/globalInfo");
+const Contact = require("./Routes/contact");
 
 
 //Declaring PORT NUMBER
@@ -72,6 +73,11 @@ app.post(process.env.GENERATE_OTP,userRoutes.generateOTP);
 // reset password
 
 app.post(process.env.RESET_PASSWD,userRoutes.resetPassword);
+
+
+/* --- Contact Form Submission ---*/
+
+app.post(process.env.CONTACT_FORM,Contact.Contact);
 
 app.listen(PORT, () => {
   console.log(`Server running locally at http://localhost:5000`);
